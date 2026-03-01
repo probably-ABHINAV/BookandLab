@@ -58,7 +58,7 @@ export default async function MentorStudentDetail({ params }: { params: { studen
               <CheckCircle className="w-5 h-5 text-emerald-500" />
               Your Previous Feedback
             </h2>
-            {mentorReviews.length === 0 ? (
+            {!mentorReviews || mentorReviews.length === 0 ? (
               <div className="bg-slate-50 rounded-xl p-6 text-center text-slate-500 border border-slate-200">
                 You haven't evaluated this student's work yet.
               </div>
