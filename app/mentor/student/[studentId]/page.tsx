@@ -3,6 +3,23 @@ import { getMentorStudentDetail } from "@/lib/services/mentor";
 import Link from "next/link";
 import { ArrowLeft, BrainCircuit, Activity, BookOpen, CheckCircle, ChevronRight, MessageSquareText } from "lucide-react";
 
+// Helper function to safely extract the chapter name. 
+// This resolves the TypeScript array mismatch and prevents runtime errors.
+const extractChapterName = (submission: any, type: "project" | "reflection") => {
+  if (!submission) return "Unknown";
+  
+  const sub = Array.isArray(submission) ? submission[0] : submission;
+  if (!sub) return "Unknown";
+
+  const relation = type === "project" ? sub.projects : sub.reflections;
+  const rel = Array.isArray(relation) ? relation[0] : relation;
+  
+  const chapters = rel?.chapters;
+  const chapter = Array.isArray(chapters) ? chapters[0] : chapters;
+
+  return chapter?.name || (type === "project" ? "Project" : "Reflection");
+};
+
 export default async function MentorStudentDetail({ params }: { params: { studentId: string } }) {
   const user = await requireRole(["MENTOR"]);
   
@@ -66,9 +83,11 @@ export default async function MentorStudentDetail({ params }: { params: { studen
               <div className="space-y-4">
                 {mentorReviews.map((review) => {
                   const isProject = !!review.project_submissions;
-                  const contextName = isProject 
-                    ? review.project_submissions.projects?.chapters?.name 
-                    : review.reflection_submissions?.reflections?.chapters?.name;
+                  // Use the helper to safely retrieve the context name
+                  const contextName = extractChapterName(
+                    isProject ? review.project_submissions : review.reflection_submissions,
+                    isProject ? "project" : "reflection"
+                  );
 
                   return (
                     <div key={review.id} className="bg-white border rounded-xl p-5 shadow-sm space-y-3">
