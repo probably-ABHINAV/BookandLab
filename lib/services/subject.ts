@@ -41,13 +41,12 @@ export async function getSubjectCurriculum(subjectId: string, userId: string) {
     .eq('subject_id', subjectId)
     .order('sequence_order');
 
-  // Fetch Chapters
+  // Fetch Chapters - FIXED: Removed duplicate and syntax-breaking .order() chain
   const { data: chapters = [] } = await supabase
     .from('chapters')
     .select('*')
     .eq('subject_id', subjectId)
     .eq('status', 'ACTIVE') // ENFORCE VISIBILITY
-    .order('sequence_order');
     .order('sequence_order');
 
   // Fetch User Progress
