@@ -3,8 +3,7 @@ import { getMentorStudentDetail } from "@/lib/services/mentor";
 import Link from "next/link";
 import { ArrowLeft, BrainCircuit, Activity, BookOpen, CheckCircle, ChevronRight, MessageSquareText } from "lucide-react";
 
-// Helper function to safely extract the chapter name. 
-// This resolves the TypeScript array mismatch and prevents runtime errors.
+// Helper function to safely extract the chapter name for reviews. 
 const extractChapterName = (submission: any, type: "project" | "reflection") => {
   if (!submission) return "Unknown";
   
@@ -18,6 +17,13 @@ const extractChapterName = (submission: any, type: "project" | "reflection") => 
   const chapter = Array.isArray(chapters) ? chapters[0] : chapters;
 
   return chapter?.name || (type === "project" ? "Project" : "Reflection");
+};
+
+// Helper function to safely extract the name property from relations that might be arrays
+const getName = (item: any, fallback = "Unknown") => {
+  if (!item) return fallback;
+  const target = Array.isArray(item) ? item[0] : item;
+  return target?.name || fallback;
 };
 
 export default async function MentorStudentDetail({ params }: { params: { studentId: string } }) {
@@ -119,7 +125,6 @@ export default async function MentorStudentDetail({ params }: { params: { studen
               <Activity className="w-4 h-4 text-emerald-600" />
               Recent Score Deltas
             </h3>
-            {/* Added null check for recentScores here */}
             {!recentScores || recentScores.length === 0 ? (
               <p className="text-sm text-slate-500 italic">No evaluated chapters yet.</p>
             ) : (
@@ -127,8 +132,9 @@ export default async function MentorStudentDetail({ params }: { params: { studen
                 {recentScores.map((score, i) => (
                   <li key={i} className="flex justify-between items-center text-sm">
                     <div className="truncate pr-2">
-                      <span className="font-medium text-slate-700">{score.skills?.name}</span>
-                      <p className="text-xs text-slate-400 truncate">{score.chapters?.name}</p>
+                      {/* Used getName helper here for both skills and chapters */}
+                      <span className="font-medium text-slate-700">{getName(score.skills, "Skill")}</span>
+                      <p className="text-xs text-slate-400 truncate">{getName(score.chapters, "Chapter")}</p>
                     </div>
                     <span className="bg-emerald-50 text-emerald-700 font-medium px-2 py-1 rounded">
                       +{score.normalized_score}
