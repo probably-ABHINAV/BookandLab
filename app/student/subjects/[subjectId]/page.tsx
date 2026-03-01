@@ -1,6 +1,6 @@
 import { requireRole } from "@/lib/rbac/roles";
 import { getSubjectCurriculum } from "@/lib/services/subject";
-import { SubjectCurriculumClient } from "@/components/student/SubjectCurriculumClient";
+import  SubjectCurriculumClient  from "@/components/student/SubjectCurriculumClient";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
