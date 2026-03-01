@@ -1,11 +1,10 @@
 import { requireRole } from "@/lib/rbac/roles";
 import { getSubjectCurriculum } from "@/lib/services/subject";
-import  SubjectCurriculumClient  from "@/components/student/SubjectCurriculumClient";
+import SubjectCurriculumClient from "@/components/student/SubjectCurriculumClient";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
 
-// Update the type to reflect that params is a Promise in recent Next.js versions
 type PageProps = {
   params: Promise<{ subjectId: string }>;
 };
@@ -23,6 +22,11 @@ export default async function SubjectCurriculumPage({ params }: PageProps) {
     redirect("/student/dashboard");
   }
 
+  // Determine if this is a senior class (assuming Class 11 and 12 are senior).
+  // Note: Adjust the `>= 11` logic if your application defines "senior" differently!
+  const classLevel = parseInt(String(curriculumData.subject.class_level), 10);
+  const isSeniorSubject = !isNaN(classLevel) && classLevel >= 11;
+
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">
       <div className="flex items-center gap-4 border-b border-indigo-200 pb-4">
@@ -39,6 +43,7 @@ export default async function SubjectCurriculumPage({ params }: PageProps) {
         subject={curriculumData.subject}
         curriculum={curriculumData.curriculum}
         flatChapters={curriculumData.flatChapters}
+        isSenior={isSeniorSubject}
       />
     </div>
   );
