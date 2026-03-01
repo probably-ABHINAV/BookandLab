@@ -119,7 +119,8 @@ export default async function MentorStudentDetail({ params }: { params: { studen
               <Activity className="w-4 h-4 text-emerald-600" />
               Recent Score Deltas
             </h3>
-            {recentScores.length === 0 ? (
+            {/* Added null check for recentScores here */}
+            {!recentScores || recentScores.length === 0 ? (
               <p className="text-sm text-slate-500 italic">No evaluated chapters yet.</p>
             ) : (
               <ul className="space-y-3">
