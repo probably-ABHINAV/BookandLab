@@ -5,10 +5,19 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
 
-export default async function SubjectCurriculumPage({ params }: { params: { subjectId: string } }) {
+// Update the type to reflect that params is a Promise in recent Next.js versions
+type PageProps = {
+  params: Promise<{ subjectId: string }>;
+};
+
+export default async function SubjectCurriculumPage({ params }: PageProps) {
+  // 1. Await the params object before destructuring its properties
+  const { subjectId } = await params;
+
+  // 2. Proceed with your existing server-side logic
   const user = await requireRole(["STUDENT"]);
   
-  const curriculumData = await getSubjectCurriculum(params.subjectId, user.id);
+  const curriculumData = await getSubjectCurriculum(subjectId, user.id);
   
   if (!curriculumData) {
     redirect("/student/dashboard");
