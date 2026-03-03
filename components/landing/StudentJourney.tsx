@@ -1,128 +1,208 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronRight, UserCircle2 } from "lucide-react";
+import { 
+  LogIn, 
+  PlayCircle, 
+  Code2, 
+  Send, 
+  TrendingUp, 
+  CheckCircle2,
+  Clock,
+  MoreHorizontal
+} from "lucide-react";
 
-const journeySteps = [
-  { time: "09:00 AM", title: "Login to Dashboard", desc: "View personalized subject cards and skill snapshot." },
-  { time: "09:05 AM", title: "Select Subject", desc: "Navigate to the current active unit and chapter." },
-  { time: "09:15 AM", title: "Enter Chapter", desc: "Review 'Why it matters' and learning outcomes." },
-  { time: "09:30 AM", title: "Build Project", desc: "Create tangible output applying the core concepts." },
-  { time: "10:15 AM", title: "Submit Reflection", desc: "Articulate challenges faced during the project." },
-  { time: "Later", title: "Skill Growth", desc: "Receive mentor evaluation and track verified skill points." }
+const schedule = [
+  { 
+    time: "09:00 AM", 
+    title: "Morning Sync", 
+    desc: "Login. Dashboard check. View daily targets.",
+    icon: LogIn,
+    color: "text-blue-600",
+    bg: "bg-blue-50"
+  },
+  { 
+    time: "09:15 AM", 
+    title: "Concept Deep Dive", 
+    desc: "Interactive lesson. Not just watching, but answering checkpoints.",
+    icon: PlayCircle,
+    color: "text-indigo-600",
+    bg: "bg-indigo-50"
+  },
+  { 
+    time: "10:00 AM", 
+    title: "Builder Mode", 
+    desc: "The core work. Writing code or solving complex equations.",
+    icon: Code2,
+    color: "text-amber-600",
+    bg: "bg-amber-50"
+  },
+  { 
+    time: "11:30 AM", 
+    title: "Submission & Reflect", 
+    desc: "Submit project + 100-word reflection on challenges faced.",
+    icon: Send,
+    color: "text-emerald-600",
+    bg: "bg-emerald-50"
+  },
+  { 
+    time: "02:00 PM", 
+    title: "Mentor Loop", 
+    desc: "Receive personalized feedback on your submission.",
+    icon: TrendingUp,
+    color: "text-purple-600",
+    bg: "bg-purple-50"
+  }
 ];
 
 export function StudentJourney() {
   return (
     <section className="py-24 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex-1 space-y-8"
-          >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-              A Day in the Life.<br/>
-              <span className="text-[#1E2A5A]">Real Work, Real Growth.</span>
-            </h2>
-            <p className="text-xl text-slate-600 leading-relaxed max-w-lg font-medium">
-              We don't do passive video playlists. Here is exactly what a student does when they enter the BookandLab system.
-            </p>
-            
-            <div className="bg-[#F8F9FB] rounded-4xl p-8 border border-slate-100 shadow-lg shadow-slate-200/50 relative mt-12">
-               {/* Timeline vertical line */}
-               <div className="absolute left-10 md:left-12 top-12 bottom-12 w-0.5 bg-indigo-100"></div>
-               
-               <div className="space-y-8 relative z-10">
-                 {journeySteps.map((step, idx) => (
-                   <motion.div 
-                     key={idx}
-                     initial={{ opacity: 0, y: 20 }}
-                     whileInView={{ opacity: 1, y: 0 }}
-                     viewport={{ once: true, margin: "-50px" }}
-                     transition={{ duration: 0.4, delay: idx * 0.1 }}
-                     className="flex items-start gap-6 group"
-                   >
-                     <div className="w-4 h-4 rounded-full bg-indigo-700 border-4 border-[#F8F9FB] shadow-sm shrink-0 mt-1.5 z-10 group-hover:scale-150 transition-transform"></div>
-                     <div>
-                       <div className="flex items-center gap-3 mb-1">
-                          <span className="text-xs font-bold text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded-md tracking-wider uppercase">{step.time}</span>
-                       </div>
-                       <h4 className="text-lg font-bold text-slate-900 group-hover:text-indigo-800 transition-colors">{step.title}</h4>
-                       <p className="text-sm text-slate-600 font-medium">{step.desc}</p>
-                     </div>
-                   </motion.div>
-                 ))}
-               </div>
+          {/* LEFT: The Narrative Timeline */}
+          <div className="flex flex-col">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-12"
+            >
+              <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                A Day in the Life.<br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">
+                  Real Work. Real Growth.
+                </span>
+              </h2>
+              <p className="text-lg text-slate-600 font-medium max-w-lg">
+                We replaced passive playlists with a structured daily ritual. Here is exactly what happens when a student logs in.
+              </p>
+            </motion.div>
+
+            <div className="relative pl-8 border-l-2 border-indigo-100 space-y-10">
+              {schedule.map((item, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="relative"
+                >
+                  {/* Timeline Dot */}
+                  <div className={`absolute -left-[41px] top-1 w-5 h-5 rounded-full border-4 border-white shadow-sm ${item.bg.replace("50", "500")}`}></div>
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-start gap-4 group cursor-default">
+                    {/* Time Badge */}
+                    <div className="shrink-0 w-24 pt-1">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                        <Clock className="w-3 h-3" /> {item.time}
+                      </span>
+                    </div>
+
+                    {/* Content Card */}
+                    <div className="flex-1 bg-white p-4 rounded-xl border border-slate-100 shadow-sm group-hover:shadow-md group-hover:border-indigo-100 transition-all">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className={`p-2 rounded-lg ${item.bg}`}>
+                          <item.icon className={`w-4 h-4 ${item.color}`} />
+                        </div>
+                        <h4 className="font-bold text-slate-800">{item.title}</h4>
+                      </div>
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Desktop Visual representation */}
+          {/* RIGHT: The Active UI Mockup */}
           <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="flex-1 w-full max-w-xl lg:max-w-none hidden lg:block"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative hidden lg:block h-full min-h-[600px]"
           >
-            <div className="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-200 shadow-2xl relative">
-              <div className="absolute top-4 left-0 w-full flex justify-center opacity-30">
-                <div className="w-32 h-2 bg-slate-300 rounded-full"></div>
-              </div>
+            {/* Abstract Background Blobs */}
+            <div className="absolute top-10 right-10 w-64 h-64 bg-amber-100 rounded-full blur-3xl opacity-50 animate-pulse"></div>
+            <div className="absolute bottom-10 left-10 w-72 h-72 bg-indigo-100 rounded-full blur-3xl opacity-50"></div>
+
+            {/* The Main "App" Container */}
+            <div className="absolute inset-4 bg-white rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-200 overflow-hidden flex flex-col">
               
-              {/* Mock Dashboard UI */}
-              <div className="bg-white rounded-2xl p-6 border border-slate-100 mt-6 shadow-sm">
-                 <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-                    <div className="flex items-center gap-3">
-                      <UserCircle2 className="w-10 h-10 text-slate-300" />
-                      <div>
-                        <div className="h-4 w-32 bg-slate-200 rounded mb-1.5"></div>
-                        <div className="h-3 w-20 bg-emerald-100 rounded"></div>
-                      </div>
+              {/* App Header */}
+              <div className="h-14 border-b border-slate-100 flex items-center justify-between px-6 bg-slate-50/50">
+                <div className="flex items-center gap-2">
+                   <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                   <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                   <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                </div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">BookandLab Student Portal</div>
+                <MoreHorizontal className="text-slate-300 w-5 h-5" />
+              </div>
+
+              {/* App Body */}
+              <div className="flex-1 p-6 bg-[#F8F9FB] flex flex-col gap-6">
+                
+                {/* 1. Task Header */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-800">Project: Logic Gates</h3>
+                    <p className="text-sm text-slate-500">Unit 4 • Computer Science</p>
+                  </div>
+                  <div className="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full border border-amber-200">
+                    In Progress
+                  </div>
+                </div>
+
+                {/* 2. Split Workspace */}
+                <div className="flex-1 flex gap-4">
+                  {/* Left: Instructions */}
+                  <div className="w-1/3 bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                    <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center mb-3">
+                      <CheckCircle2 className="w-5 h-5 text-indigo-600" />
                     </div>
-                    <div className="h-8 w-8 bg-slate-100 rounded-full"></div>
-                 </div>
-
-                 <div className="space-y-4">
-                   <div className="h-6 w-48 bg-slate-100 rounded mb-4"></div>
-                   
-                   {/* Mock Subject Card */}
-                   <div className="bg-white border border-slate-200 shadow-sm rounded-xl p-5 hover:border-indigo-200 transition-colors cursor-pointer group flex justify-between items-center">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-8 h-8 rounded bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold">P</div>
-                          <div className="h-5 w-24 bg-slate-200 rounded"></div>
-                        </div>
-                        <div className="h-3 w-40 bg-slate-100 rounded"></div>
-                      </div>
-                      <ChevronRight className="w-6 h-6 text-slate-400 group-hover:text-indigo-600 transition-colors" />
-                   </div>
-
-                   {/* Mock Subject Card 2 */}
-                   <div className="bg-white border border-slate-100 rounded-xl p-5 flex justify-between items-center opacity-60">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="w-8 h-8 rounded bg-teal-50 flex items-center justify-center"></div>
-                          <div className="h-5 w-32 bg-slate-200 rounded"></div>
-                        </div>
-                        <div className="h-3 w-36 bg-slate-100 rounded"></div>
-                      </div>
-                   </div>
-                 </div>
-
-                 {/* Mock Skill Snapshot */}
-                 <div className="mt-8 pt-6 border-t border-slate-100">
-                    <div className="h-5 w-32 bg-slate-200 rounded mb-4"></div>
-                    <div className="flex gap-2">
-                      <div className="h-10 flex-1 bg-indigo-50 border border-indigo-100 rounded-lg"></div>
-                      <div className="h-10 flex-1 bg-teal-50 border border-teal-100 rounded-lg"></div>
-                      <div className="h-10 flex-1 bg-amber-50 border border-amber-100 rounded-lg"></div>
+                    <div className="space-y-3">
+                      <div className="h-2 w-3/4 bg-slate-100 rounded"></div>
+                      <div className="h-2 w-full bg-slate-100 rounded"></div>
+                      <div className="h-2 w-5/6 bg-slate-100 rounded"></div>
+                      <div className="h-20 w-full bg-slate-50 rounded mt-4 border border-dashed border-slate-200"></div>
                     </div>
-                 </div>
+                  </div>
+
+                  {/* Right: Code/Builder Area */}
+                  <div className="flex-1 bg-[#1e293b] rounded-xl shadow-inner p-4 font-mono text-xs text-slate-300 overflow-hidden relative">
+                    <div className="absolute top-0 left-0 w-full h-8 bg-[#0f172a] flex items-center px-4 text-slate-500 gap-4 border-b border-slate-700">
+                      <span>index.js</span>
+                      <span>style.css</span>
+                    </div>
+                    <div className="mt-8 space-y-2 opacity-80">
+                      <p><span className="text-pink-400">function</span> <span className="text-blue-400">logicGate</span>(a, b) {"{"}</p>
+                      <p className="pl-4"><span className="text-purple-400">if</span> (a && b) {"{"}</p>
+                      <p className="pl-8"><span className="text-amber-400">return</span> true;</p>
+                      <p className="pl-4">{"}"}</p>
+                      <p className="pl-4"><span className="text-amber-400">return</span> false;</p>
+                      <p>{"}"}</p>
+                      <div className="animate-pulse w-2 h-4 bg-blue-400 mt-2"></div>
+                    </div>
+                    
+                    {/* Floating Success Toast */}
+                    <motion.div 
+                      animate={{ y: [10, 0, 10], opacity: [0.8, 1, 0.8] }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                      className="absolute bottom-4 right-4 bg-emerald-500 text-white px-3 py-2 rounded-lg shadow-lg flex items-center gap-2"
+                    >
+                      <CheckCircle2 size={16} />
+                      <span className="font-bold">Test Passed</span>
+                    </motion.div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </motion.div>
