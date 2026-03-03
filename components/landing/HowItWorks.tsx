@@ -1,38 +1,53 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Brain, Combine, PenTool, TrendingUp } from "lucide-react";
+import { BookOpen, Brain, Combine, PenTool, TrendingUp, ArrowRight } from "lucide-react";
 
 const steps = [
   {
     id: 1,
     title: "Understand",
-    description: "Learn core concepts through structured materials.",
-    icon: <BookOpen className="w-6 h-6 text-indigo-700" />
+    description: "Grasp core concepts through interactive video labs.",
+    icon: BookOpen,
+    color: "text-indigo-600",
+    bg: "bg-indigo-50",
+    border: "border-indigo-100"
   },
   {
     id: 2,
     title: "Think",
-    description: "Analyze scenarios and answer guided questions.",
-    icon: <Brain className="w-6 h-6 text-teal-700" />
+    description: "Solve guided scenarios that challenge your logic.",
+    icon: Brain,
+    color: "text-teal-600",
+    bg: "bg-teal-50",
+    border: "border-teal-100"
   },
   {
     id: 3,
-    title: "Build Projects",
-    description: "Apply knowledge by building tangible mini-projects.",
-    icon: <Combine className="w-6 h-6 text-amber-600" />
+    title: "Build",
+    description: "Apply what you learned in real-world mini projects.",
+    icon: Combine,
+    color: "text-amber-600",
+    bg: "bg-amber-50",
+    border: "border-amber-100"
   },
   {
     id: 4,
     title: "Reflect",
-    description: "Articulate what was learned and challenges faced.",
-    icon: <PenTool className="w-6 h-6 text-[#1E2A5A]" />
+    description: "Articulate your process and identify gaps.",
+    icon: PenTool,
+    color: "text-blue-600",
+    bg: "bg-blue-50",
+    border: "border-blue-100"
   },
   {
     id: 5,
-    title: "Grow Skills",
-    description: "Receive mentor feedback and watch skills accumulate.",
-    icon: <TrendingUp className="w-6 h-6 text-emerald-700" />
+    title: "Grow",
+    description: "Get mentor feedback and level up your skills.",
+    icon: TrendingUp,
+    color: "text-emerald-600",
+    bg: "bg-emerald-50",
+    border: "border-emerald-100"
   }
 ];
 
@@ -40,55 +55,95 @@ export function HowItWorks() {
   return (
     <section id="how-it-works" className="py-24 bg-white relative overflow-hidden">
       
+      {/* Background Decor (Subtle) */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-40">
+        <div className="absolute -top-[10%] -right-[5%] w-[500px] h-[500px] bg-slate-50 rounded-full blur-3xl"></div>
+        <div className="absolute top-[20%] -left-[5%] w-[300px] h-[300px] bg-indigo-50/50 rounded-full blur-3xl"></div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center max-w-3xl mx-auto mb-20"
-        >
-          <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E2A5A] mb-6 tracking-tight">
-            How Learning Works
-          </h2>
-          <p className="text-lg text-slate-700 font-medium bg-slate-50 border border-slate-100 shadow-sm inline-block px-5 py-2.5 rounded-xl">
-            Every chapter follows this exact flow. <span className="text-indigo-800 font-bold">No skipping. No shortcuts.</span>
-          </p>
-        </motion.div>
+        
+        {/* Header Section */}
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="text-sm font-bold text-indigo-600 tracking-widest uppercase mb-3 block">The Methodology</span>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">
+              A Scientific Approach to <br className="hidden md:block" />
+              <span className="text-indigo-600">Deep Learning</span>
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              We moved beyond "watching videos." Our 5-step active learning cycle ensures every concept is understood, applied, and retained.
+            </p>
+          </motion.div>
+        </div>
 
+        {/* Steps Container */}
         <div className="relative">
-          {/* Horizontal Connection Line */}
-          <div className="hidden lg:block absolute top-[60px] left-[10%] w-[80%] h-0.5 bg-linear-to-r from-indigo-100 via-teal-100 to-indigo-100 z-0"></div>
+          
+          {/* Connecting Line (Desktop Only) */}
+          <div className="hidden lg:block absolute top-12 left-0 w-full h-0.5 z-0">
+             {/* Dashed Line Base */}
+             <div className="w-full h-full border-t-2 border-dashed border-slate-200"></div>
+             {/* Gradient Overlay for style */}
+             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-indigo-100 to-transparent opacity-50"></div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-4 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-6 relative z-10">
             {steps.map((step, idx) => (
               <motion.div 
                 key={step.id} 
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeOut" }}
-                whileHover={{ y: -6, transition: { duration: 0.2 } }}
-                className="flex flex-col items-center text-center group bg-white lg:bg-transparent p-6 lg:p-0 rounded-3xl lg:rounded-none shadow-sm lg:shadow-none border border-slate-100 lg:border-none"
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group flex flex-col items-center text-center relative"
               >
-                <div className="relative w-28 h-28 bg-white border-4 border-white shadow-xl shadow-slate-200/50 rounded-4xl flex items-center justify-center mb-6 z-10">
-                  <div className="absolute inset-0 bg-slate-50 rounded-[1.75rem] -z-10 group-hover:opacity-0 transition-opacity duration-300"></div>
-                  <div className="absolute inset-0 bg-linear-to-br from-indigo-50 to-teal-50 rounded-[1.75rem] -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Step Icon Wrapper */}
+                <div className={`
+                    w-24 h-24 rounded-full flex items-center justify-center mb-6 
+                    bg-white border-2 shadow-lg shadow-slate-100 z-10 relative
+                    transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl
+                    ${step.border}
+                `}>
+                  {/* Inner Colored Circle */}
+                  <div className={`w-20 h-20 rounded-full ${step.bg} flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity`}>
+                    <step.icon className={`w-9 h-9 ${step.color}`} strokeWidth={1.5} />
+                  </div>
                   
-                  <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-[#1E2A5A] text-white text-sm font-bold flex items-center justify-center shadow-md">
+                  {/* Step Number Badge */}
+                  <div className="absolute -top-1 -right-1 w-7 h-7 bg-slate-900 rounded-full border-4 border-white flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
                     {step.id}
                   </div>
-                  {step.icon}
                 </div>
                 
-                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-indigo-800 transition-colors">{step.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed max-w-[220px] font-medium">
-                  {step.description}
-                </p>
+                {/* Content */}
+                <div className="px-2">
+                  <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-indigo-700 transition-colors">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                    {step.description}
+                  </p>
+                </div>
+
+                {/* Mobile Arrow (Hidden on Desktop, Visible on mobile between items) */}
+                {idx !== steps.length - 1 && (
+                  <div className="lg:hidden mt-8 text-slate-300">
+                    <ArrowRight className="w-6 h-6 rotate-90" />
+                  </div>
+                )}
+
               </motion.div>
             ))}
           </div>
         </div>
+        
       </div>
     </section>
   );
