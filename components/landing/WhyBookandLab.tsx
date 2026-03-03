@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BrainCircuit, Hammer, MessageSquaredashed, TrendingUp, Compass, MonitorOff, ArrowRight } from "lucide-react";
+// FIX: Changed MessageSquaredashed to MessageSquareDashed
+import { BrainCircuit, Hammer, MessageSquareDashed, TrendingUp, Compass, MonitorOff, ArrowRight } from "lucide-react";
 
 const features = [
   {
@@ -21,12 +22,13 @@ const features = [
     desc: "Theory is useless without application. Every module ends with a builder project—be it a logic script, a structural model, or a case analysis."
   },
   {
-    icon: MessageSquaredashed,
+    // FIX: Updated reference here as well
+    icon: MessageSquareDashed,
     color: "from-amber-400 to-orange-500",
     bg: "bg-amber-50",
     text: "text-amber-600",
     title: "Human-in-the-Loop",
-    desc: "AI can't judge nuance. Our human mentors review your subjective answers and project code, providing feedback that machines cannot match."
+    desc: "AI can't judge nuance. Our human mentors review your subjective answers and project code, providing feedback that machines cannot provide."
   },
   {
     icon: TrendingUp,
