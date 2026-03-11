@@ -3,6 +3,8 @@ import { getActiveRole } from "@/lib/rbac/roles";
 import { redirectByRole } from "@/lib/auth/redirect";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 /**
  * Stack Auth Post-Login Callback
  * 

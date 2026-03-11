@@ -22,6 +22,12 @@ export async function getDbUser() {
     .single();
 
   if (existingUser) {
+    // 1. Soft-disable security check
+    if (existingUser.is_active === false) {
+      console.warn("Soft-disabled user attempted access:", stackUser.id);
+      return null; // Force null to trigger requireAuth failure
+    }
+
     // Check if details or team context changed
     if (existingUser.email !== stackUser.primaryEmail || existingUser.name !== stackUser.displayName || existingUser.team_id !== teamId) {
       const { data: updatedUser } = await supabase

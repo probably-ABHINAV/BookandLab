@@ -3,6 +3,8 @@
 import { createProtectedAction } from "@/lib/rbac/roles";
 import { createAdminClient } from "@/lib/db/supabase";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "@/lib/services/notifications";
+import { createAdminClient as createAdminClientForNotif } from "@/lib/db/supabase";
 
 export const submitProjectAction = createProtectedAction(
   ["STUDENT"],
@@ -85,6 +87,17 @@ export const submitProjectAction = createProtectedAction(
 
     revalidatePath(`/student/chapters/${project.chapter_id}`);
     revalidatePath(`/student/dashboard`);
+
+    // Notify assigned mentors
+    const mentorSupabase = await createAdminClientForNotif();
+    const { data: mentorAssignments } = await mentorSupabase
+      .from("mentor_assignments")
+      .select("mentor_id")
+      .eq("student_id", user.id)
+      .eq("team_id", user.team_id);
+    for (const ma of mentorAssignments || []) {
+      await createNotification(ma.mentor_id, user.team_id, "PROJECT_SUBMITTED", "A student submitted a project for review.", { chapterId: project.chapter_id });
+    }
 
     return { success: true, message: "Project submitted successfully pending mentor review." };
   }

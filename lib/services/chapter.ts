@@ -11,6 +11,7 @@ export async function getChapterOverview(chapterId: string, userId: string) {
       subjects(id, name)
     `)
     .eq('id', chapterId)
+    .eq('status', 'ACTIVE')
     .single();
 
   if (!chapter) return null;

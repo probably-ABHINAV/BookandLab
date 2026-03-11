@@ -26,11 +26,12 @@ const getName = (item: any, fallback = "Unknown") => {
   return target?.name || fallback;
 };
 
-export default async function MentorStudentDetail({ params }: { params: { studentId: string } }) {
+export default async function MentorStudentDetail({ params }: { params: Promise<{ studentId: string }> }) {
+  const { studentId } = await params;
   const user = await requireRole(["MENTOR"]);
   
   // This call inherently checks assignment and team isolation
-  const data = await getMentorStudentDetail(user.id, params.studentId, user.team_id);
+  const data = await getMentorStudentDetail(user.id, studentId, user.team_id);
   const { student, skillProfiles, recentScores, mentorReviews } = data;
 
   return (

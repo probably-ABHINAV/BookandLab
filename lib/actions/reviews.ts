@@ -4,6 +4,7 @@ import { createProtectedAction } from "@/lib/rbac/roles";
 import { createAdminClient } from "@/lib/db/supabase";
 import { processMentorSkillEvaluation } from "@/lib/services/skills_engine";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "@/lib/services/notifications";
 
 export const submitMentorReviewAction = createProtectedAction(
   ["MENTOR"],
@@ -128,6 +129,12 @@ export const submitMentorReviewAction = createProtectedAction(
           .eq("id", reflectionSubmissionId);
       }
     }
+
+    // Notify student
+    const reviewMsg = statusDecision === "APPROVED"
+      ? "Your submission has been approved! Skills updated."
+      : "Your submission needs revision. Check mentor feedback.";
+    await createNotification(studentId, user.team_id, "REVIEW_COMPLETED", reviewMsg, { chapterId, statusDecision });
 
     revalidatePath(`/mentor/dashboard`);
     revalidatePath(`/mentor/student/${studentId}`);

@@ -4,11 +4,12 @@ import { ReflectionReviewClient } from "@/components/mentor/ReflectionReviewClie
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export default async function ReflectionReviewPage({ params }: { params: { id: string } }) {
+export default async function ReflectionReviewPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const user = await requireRole(["MENTOR"]);
   
   // This validates the mentor is legally allowed to review THIS student's submission in THIS team
-  const { submission, student } = await getPendingReflectionSubmission(params.id, user.id, user.team_id);
+  const { submission, student } = await getPendingReflectionSubmission(id, user.id, user.team_id);
 
   return (
     <div className="p-8 max-w-7xl mx-auto space-y-8">

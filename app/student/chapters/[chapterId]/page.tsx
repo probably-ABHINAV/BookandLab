@@ -5,11 +5,16 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
 
-export default async function ChapterEnginePage({ params }: { params: { chapterId: string } }) {
+type PageProps = {
+  params: Promise<{ chapterId: string }>;
+};
+
+export default async function ChapterEnginePage({ params }: PageProps) {
+  const { chapterId } = await params;
   const user = await requireRole(["STUDENT"]);
   
   // This automatically calculates locks by reading previous step status rules safely.
-  const data = await getChapterOverview(params.chapterId, user.id);
+  const data = await getChapterOverview(chapterId, user.id);
   
   if (!data || !data.chapter) {
     redirect("/student/dashboard");

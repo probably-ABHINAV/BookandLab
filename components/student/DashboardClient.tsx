@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, PlayCircle, Star, ChevronRight, Award } from "lucide-react";
+import { BookOpen, PlayCircle, Star, ChevronRight, Award, ArrowRight } from "lucide-react";
 
 export function DashboardClient({ user, data }: { user: any, data: any }) {
   const containerVariants = {
@@ -65,7 +65,7 @@ export function DashboardClient({ user, data }: { user: any, data: any }) {
             {/* Subtle light effect on hover */}
             <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"></div>
 
-            <div className="relative z-10">
+            <div className="relative z-10 flex-1">
               <span className="text-emerald-100 text-sm font-black uppercase tracking-widest mb-2 block">
                 In Progress
               </span>
@@ -83,12 +83,63 @@ export function DashboardClient({ user, data }: { user: any, data: any }) {
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
+        ) : data.subjects.length > 0 ? (
+          <motion.div 
+            whileHover={{ y: -4 }}
+            className="bg-white border-2 border-indigo-100 border-dashed rounded-[2rem] p-8 text-center bg-indigo-50/30 group transition-all hover:bg-white hover:border-indigo-300"
+          >
+            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 mx-auto mb-4 group-hover:scale-110 transition-transform">
+              <PlayCircle className="w-8 h-8" />
+            </div>
+            <h3 className="text-2xl font-black text-slate-800 mb-2">Ready to start?</h3>
+            <p className="text-slate-500 font-medium mb-6">You have no active chapters. Pick a subject below to begin your journey.</p>
+            <button 
+              onClick={() => {
+                const firstSub = data.subjects[0];
+                window.location.href = `/student/subjects/${firstSub.id}`;
+              }}
+              className="inline-flex items-center gap-2 px-8 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-600/20"
+            >
+              Open {data.subjects[0].name} <ArrowRight className="w-4 h-4" />
+            </button>
+          </motion.div>
         ) : (
-          <div className="bg-white border-2 border-dashed border-slate-200 rounded-[2rem] p-8 text-center bg-slate-50/50">
-            <h3 className="text-lg font-bold text-slate-700 mb-2">No active chapter found</h3>
-            <p className="text-slate-500 font-medium mb-4">Start a new chapter from your subjects below.</p>
+          <div className="bg-white border-2 border-dashed border-slate-200 rounded-[2rem] p-10 text-center bg-slate-50/50">
+            <Award className="w-12 h-12 text-slate-300 mx-auto mb-4 opacity-50" />
+            <h3 className="text-xl font-bold text-slate-700 mb-2">Welcome to BookandLab!</h3>
+            <p className="text-slate-500 font-medium max-w-sm mx-auto">
+              Your curriculum haven't been assigned yet. Wait for your administrator to add your subjects to get started.
+            </p>
           </div>
         )}
+
+        {/* Weekly Goal & Overall Progress */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div className="bg-white rounded-[1.5rem] border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Weekly Learning Goal</h3>
+            <div className="flex items-end gap-4">
+              <div className="text-5xl font-black text-indigo-600">3<span className="text-2xl text-slate-400">/5</span></div>
+              <div className="text-sm text-slate-600 font-medium pb-1.5">Chapters completed<br/>this week.</div>
+            </div>
+            <div className="h-2 w-full bg-slate-100 rounded-full mt-5 overflow-hidden">
+              <div className="h-full bg-indigo-500 rounded-full w-[60%]"></div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-[1.5rem] border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Pending Tasks</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-slate-800 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500"></div> Revise Physics Project</span>
+                <Link href="/student/projects" className="text-xs font-bold text-indigo-600 hover:underline">View</Link>
+              </li>
+              <li className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-slate-800 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-amber-500"></div> Submit Chem Reflection</span>
+                <Link href="/student/projects" className="text-xs font-bold text-indigo-600 hover:underline">View</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
       </motion.section>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -195,6 +246,40 @@ export function DashboardClient({ user, data }: { user: any, data: any }) {
               </div>
             </div>
           </motion.section>
+
+          {/* Activity & Announcements */}
+          <section className="bg-slate-50 border border-slate-200 rounded-[2rem] p-8">
+             <h2 className="text-lg font-extrabold text-slate-800 mb-4 uppercase tracking-wider text-sm">Announcements</h2>
+             <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-xl mb-6 flex gap-3 text-sm text-indigo-900 shadow-sm">
+               <span className="text-2xl">📢</span>
+               <div>
+                 <p className="font-bold">New Science Kits Available</p>
+                 <p className="text-indigo-700">Check with your mentor to get the Phase 2 experiment kit.</p>
+               </div>
+             </div>
+
+             <h2 className="text-lg font-extrabold text-slate-800 mb-4 uppercase tracking-wider text-sm">Recent Activity</h2>
+             <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+               <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                 <div className="flex items-center justify-center w-4 h-4 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2"></div>
+                 <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                   <div className="flex items-center justify-between mb-1">
+                     <time className="text-xs font-bold text-indigo-600">Today</time>
+                   </div>
+                   <div className="text-slate-700 text-sm font-medium">Completed "Atoms Intro"</div>
+                 </div>
+               </div>
+               <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                 <div className="flex items-center justify-center w-4 h-4 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2"></div>
+                 <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                   <div className="flex items-center justify-between mb-1">
+                     <time className="text-xs font-bold text-slate-400">Yesterday</time>
+                   </div>
+                   <div className="text-slate-700 text-sm font-medium">Logged 45 mins in Biology</div>
+                 </div>
+               </div>
+             </div>
+          </section>
         </motion.div>
 
       </div>
