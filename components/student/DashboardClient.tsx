@@ -2,9 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, PlayCircle, Star, ChevronRight, Award, ArrowRight } from "lucide-react";
+import { 
+  BarChart3, CheckSquare, FileText, Zap, 
+  Microscope, Triangle, Book, Globe, 
+  ChevronRight, Calendar as CalendarIcon, 
+  CheckCircle2, Clock, AlertCircle
+} from "lucide-react";
 
-export function DashboardClient({ user, data }: { user: any, data: any }) {
+export function DashboardClient({ user, data }: { user?: any, data?: any }) {
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -15,274 +20,472 @@ export function DashboardClient({ user, data }: { user: any, data: any }) {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 60, damping: 15 } }
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 15 } }
   };
+
+  // Fallback data if none provided
+  const studentName = user?.name || "Aryan";
 
   return (
     <motion.div 
       variants={containerVariants} 
       initial="hidden" 
       animate="show" 
-      className="p-4 md:p-8 max-w-7xl mx-auto space-y-8"
+      className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-8 bg-[#fafafa] min-h-screen"
     >
       {/* 1. Dashboard Header */}
-      <motion.header variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-200 pb-6 gap-4">
-        <div>
-          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Focus & Growth</h1>
-          <p className="text-lg text-slate-500 mt-2">
-            Welcome back, <span className="font-semibold text-slate-800">{user.name || "Student"}</span>.
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link href="/" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-200 hover:text-indigo-700 transition-colors border border-transparent hover:border-slate-300">
-            <BookOpen className="w-4 h-4" />
-            <span className="hidden sm:inline">Landing Page</span>
-          </Link>
-          <div className="w-px h-6 bg-slate-200 mx-1"></div>
-          {/* Active Tags / Phase 2 placeholder */}
-          <motion.span whileHover={{ scale: 1.05 }} className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 shadow-sm border border-indigo-100 cursor-default">
-            Explorer Level 1
-          </motion.span>
-          <motion.span whileHover={{ scale: 1.05 }} className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 shadow-sm border border-emerald-100 cursor-default">
-            Thinker
-          </motion.span>
-        </div>
+      <motion.header variants={itemVariants} className="flex flex-col gap-1">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+          Good morning, <span className="text-blue-600">{studentName}</span> 👋
+        </h1>
+        <p className="text-sm md:text-base text-slate-500 font-medium">
+          Here's your learning overview for this week — you're on a great streak!
+        </p>
       </motion.header>
       
-      {/* 2. Resume Learning (The Hook) */}
-      <motion.section variants={itemVariants}>
-        <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-          <PlayCircle className="text-emerald-500" />
-          Jump Back In
-        </h2>
-        
-        {data.resumeState ? (
-          <motion.div 
-            whileHover={{ y: -4, scale: 1.01 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-[2rem] p-6 md:p-8 text-white shadow-xl shadow-emerald-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group border border-emerald-500/50"
-          >
-            {/* Subtle light effect on hover */}
-            <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"></div>
-
-            <div className="relative z-10 flex-1">
-              <span className="text-emerald-100 text-sm font-black uppercase tracking-widest mb-2 block">
-                In Progress
-              </span>
-              <h3 className="text-3xl font-extrabold mb-2 tracking-tight">{data.resumeState.chapter?.name}</h3>
-              <p className="text-emerald-50 opacity-90 font-medium">
-                Step {data.resumeState.step?.number}: Focus and complete the challenge.
-              </p>
-            </div>
-            
-            <Link 
-              href={`/student/chapters/${data.resumeState.chapter?.id}?step=${data.resumeState.step?.number}`}
-              className="relative z-10 px-8 py-4 bg-white text-emerald-700 font-bold rounded-xl hover:bg-emerald-50 transition-colors shadow-lg flex items-center gap-2 shrink-0 group-hover:shadow-emerald-900/20"
-            >
-              Resume Step {data.resumeState.step?.number}
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
-        ) : data.subjects.length > 0 ? (
-          <motion.div 
-            whileHover={{ y: -4 }}
-            className="bg-white border-2 border-indigo-100 border-dashed rounded-[2rem] p-8 text-center bg-indigo-50/30 group transition-all hover:bg-white hover:border-indigo-300"
-          >
-            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 mx-auto mb-4 group-hover:scale-110 transition-transform">
-              <PlayCircle className="w-8 h-8" />
-            </div>
-            <h3 className="text-2xl font-black text-slate-800 mb-2">Ready to start?</h3>
-            <p className="text-slate-500 font-medium mb-6">You have no active chapters. Pick a subject below to begin your journey.</p>
-            <button 
-              onClick={() => {
-                const firstSub = data.subjects[0];
-                window.location.href = `/student/subjects/${firstSub.id}`;
-              }}
-              className="inline-flex items-center gap-2 px-8 py-3 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-600/20"
-            >
-              Open {data.subjects[0].name} <ArrowRight className="w-4 h-4" />
-            </button>
-          </motion.div>
-        ) : (
-          <div className="bg-white border-2 border-dashed border-slate-200 rounded-[2rem] p-10 text-center bg-slate-50/50">
-            <Award className="w-12 h-12 text-slate-300 mx-auto mb-4 opacity-50" />
-            <h3 className="text-xl font-bold text-slate-700 mb-2">Welcome to BookandLab!</h3>
-            <p className="text-slate-500 font-medium max-w-sm mx-auto">
-              Your curriculum haven't been assigned yet. Wait for your administrator to add your subjects to get started.
-            </p>
+      {/* 2. Overview Stats */}
+      <motion.section variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        {/* Learning Progress */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-[100px] -z-10 opacity-50"></div>
+          <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 mb-4">
+            <BarChart3 className="w-5 h-5" />
           </div>
-        )}
-
-        {/* Weekly Goal & Overall Progress */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <div className="bg-white rounded-[1.5rem] border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Weekly Learning Goal</h3>
-            <div className="flex items-end gap-4">
-              <div className="text-5xl font-black text-indigo-600">3<span className="text-2xl text-slate-400">/5</span></div>
-              <div className="text-sm text-slate-600 font-medium pb-1.5">Chapters completed<br/>this week.</div>
-            </div>
-            <div className="h-2 w-full bg-slate-100 rounded-full mt-5 overflow-hidden">
-              <div className="h-full bg-indigo-500 rounded-full w-[60%]"></div>
-            </div>
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Learning Progress</h3>
+          <div className="text-3xl font-black text-slate-800 mb-2">68<span className="text-xl">%</span></div>
+          <div className="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md w-fit">
+            ↑ +12% this week
           </div>
+        </div>
 
-          <div className="bg-white rounded-[1.5rem] border border-slate-200 p-6 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
-            <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-4">Pending Tasks</h3>
-            <ul className="space-y-3">
-              <li className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-800 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500"></div> Revise Physics Project</span>
-                <Link href="/student/projects" className="text-xs font-bold text-indigo-600 hover:underline">View</Link>
-              </li>
-              <li className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-slate-800 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-amber-500"></div> Submit Chem Reflection</span>
-                <Link href="/student/projects" className="text-xs font-bold text-indigo-600 hover:underline">View</Link>
-              </li>
-            </ul>
+        {/* Chapters Completed */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-[100px] -z-10 opacity-50"></div>
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500 mb-4">
+            <CheckSquare className="w-5 h-5" />
+          </div>
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Chapters Completed</h3>
+          <div className="text-3xl font-black text-slate-800 mb-2">34<span className="text-xl text-slate-400 font-medium">/50</span></div>
+          <div className="text-xs font-medium text-slate-400 mt-auto">16 chapters remaining</div>
+        </div>
+
+        {/* Projects Submitted */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-[100px] -z-10 opacity-50"></div>
+          <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 mb-4">
+            <FileText className="w-5 h-5" />
+          </div>
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Projects Submitted</h3>
+          <div className="text-3xl font-black text-slate-800 mb-2">7<span className="text-xl text-slate-400 font-medium">/10</span></div>
+          <div className="inline-flex items-center text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-md w-fit mt-auto">
+            2 pending review
+          </div>
+        </div>
+
+        {/* Skill Growth Score */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-bl-[100px] -z-10 opacity-50"></div>
+          <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 mb-4">
+            <Zap className="w-5 h-5" />
+          </div>
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Skill Growth Score</h3>
+          <div className="text-3xl font-black text-slate-800 mb-2">82<span className="text-xl text-slate-400 font-medium">/100</span></div>
+          <div className="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md w-fit mt-auto">
+            ↑ +6 pts since last week
           </div>
         </div>
       </motion.section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* 3. Subjects & Curriculum */}
-        <motion.section variants={itemVariants} className="col-span-1 lg:col-span-2 space-y-4">
-          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <BookOpen className="text-indigo-500 w-5 h-5" />
-            My Curriculum
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {data.subjects.length > 0 ? data.subjects.map((subject: any, idx: number) => (
-              <Link href={`/student/subjects/${subject.id}`} key={subject.id} className="block group h-full">
-                <motion.div 
-                  whileHover={{ y: -6 }}
-                  className="bg-white border border-slate-200 rounded-[1.5rem] p-6 shadow-sm hover:shadow-xl hover:border-indigo-300 transition-all flex flex-col h-full relative overflow-hidden"
-                >
-                  {/* Subtle top border highlight on hover */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-                  <div className="flex justify-between items-start mb-6">
-                    <h3 className="font-extrabold text-xl text-slate-900 group-hover:text-indigo-600 transition-colors tracking-tight">
-                      {subject.name}
-                    </h3>
-                  </div>
-                  
-                  <div className="space-y-3 mt-auto">
-                    <div className="flex justify-between text-sm text-slate-500 font-bold uppercase tracking-wider">
-                      <span>Progress</span>
-                      <span>{subject.completedChapters} / {subject.totalChapters} Ch</span>
-                    </div>
-                    <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: `${subject.progressPct}%` }}
-                        transition={{ duration: 1, ease: "easeOut", delay: 0.2 + (idx * 0.1) }}
-                        className="h-full bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-full"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              </Link>
-            )) : (
-              <div className="col-span-full bg-slate-50 p-8 rounded-[1.5rem] text-center border border-slate-200">
-                <p className="text-slate-500 font-medium">No subjects assigned yet.</p>
-              </div>
-            )}
+      {/* 3. Activity & Calendar */}
+      <motion.section variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Learning Activity Chart (Placeholder based on design) */}
+        <div className="lg:col-span-2 bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-slate-800">Learning Activity</h2>
+            <span className="text-sm text-slate-400 font-medium">March 2025</span>
           </div>
-        </motion.section>
+          <div className="flex items-center gap-4 mb-8 text-sm font-medium text-slate-500">
+            <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-blue-500"></div> Study hours</div>
+            <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded bg-blue-100"></div> Target</div>
+          </div>
+          {/* Chart Graphic Placeholder */}
+          <div className="h-48 w-full flex items-end justify-between px-2 md:px-8 border-b border-slate-100 pb-2 relative">
+             {/* Mock bars */}
+             <div className="w-8 md:w-12 bg-blue-100 h-[60%] rounded-t-sm relative"><div className="absolute bottom-0 w-full bg-blue-500 h-[40%] rounded-t-sm"></div></div>
+             <div className="w-8 md:w-12 bg-blue-100 h-[80%] rounded-t-sm relative"><div className="absolute bottom-0 w-full bg-blue-500 h-[70%] rounded-t-sm"></div></div>
+             <div className="w-8 md:w-12 bg-blue-100 h-[50%] rounded-t-sm relative"><div className="absolute bottom-0 w-full bg-blue-500 h-[80%] rounded-t-sm"></div></div>
+             <div className="w-8 md:w-12 bg-blue-100 h-[90%] rounded-t-sm relative"><div className="absolute bottom-0 w-full bg-blue-500 h-[60%] rounded-t-sm"></div></div>
+             <div className="w-8 md:w-12 bg-blue-100 h-[40%] rounded-t-sm relative"><div className="absolute bottom-0 w-full bg-blue-500 h-[30%] rounded-t-sm"></div></div>
+             <div className="w-8 md:w-12 bg-blue-100 h-[70%] rounded-t-sm relative"><div className="absolute bottom-0 w-full bg-blue-500 h-[90%] rounded-t-sm"></div></div>
+             <div className="w-8 md:w-12 bg-slate-50 h-[60%] rounded-t-sm relative border border-slate-100 border-dashed"></div>
+          </div>
+          <div className="flex justify-between px-2 md:px-8 mt-4 text-xs font-medium text-slate-400">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+        </div>
 
-        {/* 4. Skill Snapshot & Feedback */}
-        <motion.div variants={itemVariants} className="space-y-8">
-          <section className="bg-slate-900 rounded-[2rem] p-8 text-white shadow-2xl relative overflow-hidden">
-            {/* Background artifact */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500 rounded-full blur-[80px] opacity-40 mix-blend-screen"></div>
-
-            <div className="flex items-center justify-between mb-8 relative z-10">
-              <h2 className="text-xl font-extrabold flex items-center gap-2">
-                <Award className="text-amber-400 w-6 h-6" />
-                Skill Snapshot
-              </h2>
-              <Link href="/student/skills" className="text-xs font-bold text-slate-300 hover:text-white uppercase tracking-wider underline underline-offset-4">
-                Details
-              </Link>
+        {/* Calendar Widget */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-slate-800">March 2025</h2>
+            <div className="flex gap-2 text-slate-400">
+              <button className="p-1 hover:bg-slate-100 rounded">&lt;</button>
+              <button className="p-1 hover:bg-slate-100 rounded">&gt;</button>
             </div>
-            
-            <div className="space-y-5 relative z-10">
-              {Object.entries(data.skills).map(([skill, value]: [string, any], idx) => (
-                <div key={skill} className="space-y-2 group">
-                  <div className="flex justify-between text-xs font-black uppercase tracking-widest text-slate-300 text-left">
-                    <span className="group-hover:text-white transition-colors">{skill}</span>
-                    <span className="text-amber-400 font-bold py-0.5 px-2 bg-amber-400/10 rounded-md">+{value}</span>
-                  </div>
-                  <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ width: 0 }}
-                      animate={{ width: `${Math.min(value * 2, 100)}%` }}
-                      transition={{ duration: 1.2, ease: "easeOut", delay: 0.4 + (idx * 0.1) }}
-                      className="h-full bg-gradient-to-r from-amber-500 to-yellow-300 rounded-full"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          </div>
+          {/* Days */}
+          <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium text-slate-400 mb-4">
+            <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+          </div>
+          {/* Dates (Static representation) */}
+          <div className="grid grid-cols-7 gap-2 text-center text-sm font-medium text-slate-700">
+            <div className="text-slate-300 py-1">25</div><div className="text-slate-300 py-1">26</div><div className="text-slate-300 py-1">27</div><div className="text-slate-300 py-1">28</div><div className="text-slate-300 py-1">1</div><div className="py-1 bg-blue-50 text-blue-600 rounded">2</div><div className="py-1 bg-blue-50 text-blue-600 rounded">3</div>
+            <div className="py-1 bg-blue-50 text-blue-600 rounded">4</div><div className="py-1 bg-blue-50 text-blue-600 rounded">5</div><div className="py-1 bg-blue-50 text-blue-600 rounded">6</div><div className="py-1 bg-orange-50 text-orange-600 rounded">7</div><div className="py-1 bg-blue-50 text-blue-600 rounded">8</div><div className="py-1 bg-blue-50 text-blue-600 rounded">9</div><div className="py-1">10</div>
+            <div className="py-1 bg-blue-50 text-blue-600 rounded">11</div><div className="py-1 bg-emerald-50 text-emerald-600 rounded">12</div><div className="py-1 bg-blue-50 text-blue-600 rounded">13</div><div className="py-1 bg-blue-50 text-blue-600 rounded">14</div><div className="py-1 bg-orange-50 text-orange-600 rounded">15</div><div className="py-1 bg-blue-50 text-blue-600 rounded">16</div><div className="py-1">17</div>
+            <div className="py-1 bg-blue-50 text-blue-600 rounded">18</div><div className="py-1 bg-blue-50 text-blue-600 rounded">19</div><div className="py-1 bg-blue-600 text-white rounded shadow-md shadow-blue-200">20</div><div className="py-1">21</div><div className="py-1">22</div><div className="py-1">23</div><div className="py-1">24</div>
+            <div className="py-1">25</div><div className="py-1">26</div><div className="py-1">27</div><div className="py-1 bg-orange-50 text-orange-600 rounded">28</div><div className="py-1">29</div><div className="py-1">30</div><div className="py-1">31</div>
+          </div>
+          <div className="flex items-center gap-3 mt-6 text-xs font-medium text-slate-500 justify-center">
+            <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-blue-600"></div> Today</span>
+            <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-blue-100"></div> Study</span>
+            <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-orange-100"></div> Project</span>
+            <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-emerald-100"></div> Review</span>
+          </div>
+        </div>
+      </motion.section>
 
-          <motion.section 
-            whileHover={{ y: -4 }}
-            className="bg-white border border-rose-100 rounded-[2rem] p-8 shadow-lg shadow-rose-100/50 relative overflow-hidden"
-          >
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-rose-200 rounded-full blur-[60px] opacity-40"></div>
-            <h2 className="text-xl font-extrabold text-slate-800 mb-6 flex items-center gap-2 relative z-10">
-              <Star className="text-rose-500 w-6 h-6 fill-rose-100" />
-              Latest Feedback
-            </h2>
-            <div className="bg-gradient-to-br from-rose-50 to-white rounded-2xl p-6 text-sm text-slate-700 border border-rose-100 relative z-10 shadow-sm">
-              <p className="italic leading-relaxed font-medium text-base">
-                "Excellent critical thinking shown on the latest project. Try to visually document your steps next time..."
+      {/* 4. Continue Learning */}
+      <motion.section variants={itemVariants} className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold text-slate-800">Continue Learning</h2>
+          <Link href="/subjects" className="text-sm font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1">
+            View all subjects <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {/* Subject Cards */}
+          <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col group hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-500 mb-4">
+              <Microscope className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-slate-800 text-lg">Science</h3>
+            <p className="text-sm text-slate-400 font-medium mb-6">Ch. 7 — Motion & Forces</p>
+            <div className="mt-auto space-y-2">
+              <div className="flex justify-between text-xs font-bold text-slate-500">
+                <span>Progress</span><span>72%</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden mb-4">
+                <div className="h-full bg-blue-500 rounded-full w-[72%]"></div>
+              </div>
+              <button className="w-full py-2.5 rounded-xl border border-blue-100 text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors flex justify-center items-center gap-1">
+                Continue <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col group hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-500 mb-4">
+              <Triangle className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-slate-800 text-lg">Mathematics</h3>
+            <p className="text-sm text-slate-400 font-medium mb-6">Ch. 5 — Quadratic Equations</p>
+            <div className="mt-auto space-y-2">
+              <div className="flex justify-between text-xs font-bold text-slate-500">
+                <span>Progress</span><span>58%</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden mb-4">
+                <div className="h-full bg-orange-500 rounded-full w-[58%]"></div>
+              </div>
+              <button className="w-full py-2.5 rounded-xl border border-blue-100 text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors flex justify-center items-center gap-1">
+                Continue <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col group hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-500 mb-4">
+              <Book className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-slate-800 text-lg">English</h3>
+            <p className="text-sm text-slate-400 font-medium mb-6">Ch. 4 — Poetry Analysis</p>
+            <div className="mt-auto space-y-2">
+              <div className="flex justify-between text-xs font-bold text-slate-500">
+                <span>Progress</span><span>89%</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden mb-4">
+                <div className="h-full bg-emerald-500 rounded-full w-[89%]"></div>
+              </div>
+              <button className="w-full py-2.5 rounded-xl border border-blue-100 text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors flex justify-center items-center gap-1">
+                Continue <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col group hover:shadow-md transition-shadow">
+            <div className="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center text-cyan-500 mb-4">
+              <Globe className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-slate-800 text-lg">Social Science</h3>
+            <p className="text-sm text-slate-400 font-medium mb-6">Ch. 6 — Democracy & Rights</p>
+            <div className="mt-auto space-y-2">
+              <div className="flex justify-between text-xs font-bold text-slate-500">
+                <span>Progress</span><span>45%</span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden mb-4">
+                <div className="h-full bg-purple-500 rounded-full w-[45%]"></div>
+              </div>
+              <button className="w-full py-2.5 rounded-xl border border-blue-100 text-blue-600 font-bold text-sm hover:bg-blue-50 transition-colors flex justify-center items-center gap-1">
+                Continue <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </motion.section>
+
+      {/* 5. Lower Dashboard Grid */}
+      <motion.section variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Mentor Feedback */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-slate-800">Mentor Feedback</h2>
+            <Link href="/feedback" className="text-xs font-bold text-blue-600 hover:text-blue-700">View all</Link>
+          </div>
+          <div className="space-y-4">
+            <div className="border-b border-slate-100 pb-4">
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="font-bold text-slate-800 text-sm">Forces & Motion Project</h4>
+                <span className="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">⭐ 9/10</span>
+              </div>
+              <p className="text-sm text-slate-500 leading-relaxed italic mb-3">
+                "Excellent application of Newton's laws. Your diagrams were clear and your analysis was thorough."
               </p>
-              <div className="mt-4 flex items-center gap-3 text-rose-600 font-bold text-xs uppercase tracking-wider">
-                <div className="w-6 h-6 rounded-full bg-rose-200 flex items-center justify-center text-rose-700 shadow-sm">M</div>
-                Mentor Review
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-700">SR</div>
+                  <span className="text-xs font-medium text-slate-400">Dr. S. Rajan</span>
+                </div>
+                <button className="text-xs font-bold text-blue-600 hover:underline">View full &rarr;</button>
               </div>
             </div>
-          </motion.section>
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <h4 className="font-bold text-slate-800 text-sm">Algebra Reflection</h4>
+                <span className="inline-flex items-center text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-md">⭐ 7/10</span>
+              </div>
+              <p className="text-sm text-slate-500 leading-relaxed italic mb-3">
+                "Good effort, but work on showing intermediate steps in solutions for clarity."
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-700">PK</div>
+                  <span className="text-xs font-medium text-slate-400">Prof. P. Kumar</span>
+                </div>
+                <button className="text-xs font-bold text-blue-600 hover:underline">View full &rarr;</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          {/* Activity & Announcements */}
-          <section className="bg-slate-50 border border-slate-200 rounded-[2rem] p-8">
-             <h2 className="text-lg font-extrabold text-slate-800 mb-4 uppercase tracking-wider text-sm">Announcements</h2>
-             <div className="p-4 bg-indigo-50 border border-indigo-100 rounded-xl mb-6 flex gap-3 text-sm text-indigo-900 shadow-sm">
-               <span className="text-2xl">📢</span>
-               <div>
-                 <p className="font-bold">New Science Kits Available</p>
-                 <p className="text-indigo-700">Check with your mentor to get the Phase 2 experiment kit.</p>
-               </div>
-             </div>
+        {/* Skill Development */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-slate-800">Skill Development</h2>
+            <Link href="/skills" className="text-xs font-bold text-blue-600 hover:text-blue-700">Details</Link>
+          </div>
+          <div className="space-y-5">
+            <div>
+              <div className="flex justify-between text-sm font-bold text-slate-600 mb-1">
+                <span className="flex items-center gap-1.5"><Zap className="w-4 h-4 text-orange-400"/> Concept Clarity</span>
+                <span>88%</span>
+              </div>
+              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500 rounded-full w-[88%]"></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-sm font-bold text-slate-600 mb-1">
+                <span className="flex items-center gap-1.5"><Triangle className="w-4 h-4 text-purple-400"/> Critical Thinking</span>
+                <span>75%</span>
+              </div>
+              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-purple-500 rounded-full w-[75%]"></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-sm font-bold text-slate-600 mb-1">
+                <span className="flex items-center gap-1.5"><Microscope className="w-4 h-4 text-emerald-400"/> Application Skill</span>
+                <span>82%</span>
+              </div>
+              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-orange-500 rounded-full w-[82%]"></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between text-sm font-bold text-slate-600 mb-1">
+                <span className="flex items-center gap-1.5"><FileText className="w-4 h-4 text-blue-400"/> Communication</span>
+                <span>91%</span>
+              </div>
+              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-full bg-emerald-500 rounded-full w-[91%]"></div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 p-4 rounded-xl bg-blue-50 border border-blue-100 text-blue-800 text-sm">
+            <div className="font-bold mb-1">Overall Score: 84/100</div>
+            <div className="text-blue-600 flex items-center gap-1 text-xs font-medium">Top 15% of your cohort this week <Zap className="w-3 h-3"/></div>
+          </div>
+        </div>
 
-             <h2 className="text-lg font-extrabold text-slate-800 mb-4 uppercase tracking-wider text-sm">Recent Activity</h2>
-             <div className="space-y-4 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
-               <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                 <div className="flex items-center justify-center w-4 h-4 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2"></div>
-                 <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                   <div className="flex items-center justify-between mb-1">
-                     <time className="text-xs font-bold text-indigo-600">Today</time>
-                   </div>
-                   <div className="text-slate-700 text-sm font-medium">Completed "Atoms Intro"</div>
-                 </div>
-               </div>
-               <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                 <div className="flex items-center justify-center w-4 h-4 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2"></div>
-                 <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                   <div className="flex items-center justify-between mb-1">
-                     <time className="text-xs font-bold text-slate-400">Yesterday</time>
-                   </div>
-                   <div className="text-slate-700 text-sm font-medium">Logged 45 mins in Biology</div>
-                 </div>
-               </div>
-             </div>
-          </section>
-        </motion.div>
+        {/* Today's Tasks */}
+        <div className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 flex flex-col">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold text-slate-800">Today's Tasks</h2>
+            <span className="text-xs font-medium text-slate-500">3/5 done</span>
+          </div>
+          <div className="space-y-4">
+            
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <div className="flex justify-between">
+                  <h4 className="font-bold text-slate-400 text-sm line-through">Read Ch. 7 - Section A</h4>
+                  <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Done</span>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5">Science • Completed at 9:30 AM</p>
+              </div>
+            </div>
 
-      </div>
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <div className="flex justify-between">
+                  <h4 className="font-bold text-slate-400 text-sm line-through">Complete Algebra Problem Set</h4>
+                  <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Done</span>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5">Mathematics • Completed at 11:00 AM</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <div className="flex justify-between">
+                  <h4 className="font-bold text-slate-400 text-sm line-through">Poetry Reflection Entry</h4>
+                  <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Done</span>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5">English • Completed at 1:15 PM</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-5 h-5 rounded border-2 border-slate-200 mt-0.5 shrink-0"></div>
+              <div className="flex-1">
+                <div className="flex justify-between">
+                  <h4 className="font-bold text-slate-800 text-sm">Submit Democracy Project</h4>
+                  <span className="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded">Pending</span>
+                </div>
+                <p className="text-xs text-slate-500 mt-0.5">Social Science • Due by 6:00 PM</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-5 h-5 rounded border-2 border-slate-200 mt-0.5 shrink-0"></div>
+              <div className="flex-1">
+                <div className="flex justify-between">
+                  <h4 className="font-bold text-slate-800 text-sm">Review Mentor Feedback</h4>
+                  <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded flex items-center gap-1"><AlertCircle className="w-3 h-3"/> Urgent</span>
+                </div>
+                <p className="text-xs text-slate-500 mt-0.5">Forces & Motion • Action needed</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </motion.section>
+
+      {/* 6. Learning Path Tracker */}
+      <motion.section variants={itemVariants} className="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-100 overflow-x-auto">
+         <div className="flex items-center justify-between mb-8">
+            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+              Learning Path Tracker <span className="text-slate-400 text-sm font-medium">— Science Ch. 7: Motion & Forces</span>
+            </h2>
+            <Link href="/path" className="text-xs font-bold text-blue-600 hover:text-blue-700 whitespace-nowrap">View details</Link>
+         </div>
+
+         {/* Path visualization */}
+         <div className="relative flex items-center justify-between min-w-[700px] px-8 py-4">
+            {/* Background Track */}
+            <div className="absolute top-1/2 left-8 right-8 h-1 bg-slate-100 -translate-y-1/2 z-0"></div>
+            {/* Active Track */}
+            <div className="absolute top-1/2 left-8 w-1/2 h-1 bg-emerald-500 -translate-y-1/2 z-0"></div>
+            
+            {/* Nodes */}
+            <div className="relative z-10 flex flex-col items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center border-4 border-white shadow-sm">
+                <Globe className="w-5 h-5" />
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-bold text-slate-800">Context</div>
+                <div className="text-xs font-bold text-emerald-500">Completed</div>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center border-4 border-white shadow-sm">
+                <Book className="w-5 h-5" />
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-bold text-slate-800">Concept</div>
+                <div className="text-xs font-bold text-emerald-500">Completed</div>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-emerald-500 text-white flex items-center justify-center border-4 border-white shadow-sm">
+                <Triangle className="w-5 h-5" />
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-bold text-slate-800">Thinking</div>
+                <div className="text-xs font-bold text-emerald-500">Completed</div>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center gap-3">
+              <div className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center border-4 border-white shadow-md ring-4 ring-blue-50">
+                <Microscope className="w-6 h-6" />
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-bold text-blue-600">Deep Learning</div>
+                <div className="text-xs font-bold text-blue-500">In Progress</div>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center gap-3 opacity-50">
+              <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center border-4 border-white shadow-sm">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-bold text-slate-500">Project</div>
+                <div className="text-xs font-medium text-slate-400">Locked</div>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-col items-center gap-3 opacity-50">
+              <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center border-4 border-white shadow-sm">
+                <Zap className="w-5 h-5" />
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-bold text-slate-500">Reflection</div>
+                <div className="text-xs font-medium text-slate-400">Locked</div>
+              </div>
+            </div>
+
+         </div>
+      </motion.section>
+
     </motion.div>
   );
 }
