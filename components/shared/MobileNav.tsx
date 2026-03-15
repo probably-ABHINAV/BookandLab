@@ -74,7 +74,7 @@ export function MobileNav({
               <div className="p-6 border-b border-slate-800/80 flex items-center justify-between shrink-0">
                 <div className="flex flex-col">
                   <span className="text-white font-extrabold text-xl tracking-tight">
-                    book and lab
+                    BookandLab
                   </span>
                   <span className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-1">
                     Student
