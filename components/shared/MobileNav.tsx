@@ -72,14 +72,13 @@ export function MobileNav({
               
               {/* Header / Logo Area */}
               <div className="p-6 border-b border-slate-800/80 flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-                    <BookOpen className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-[15px] font-bold text-white tracking-wide leading-tight">BookandLab</h2>
-                    <p className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-0.5">Student</p>
-                  </div>
+                <div className="flex flex-col">
+                  <span className="text-white font-extrabold text-xl tracking-tight">
+                    book and lab
+                  </span>
+                  <span className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-1">
+                    Student
+                  </span>
                 </div>
                 <button 
                   onClick={() => setIsOpen(false)} 
