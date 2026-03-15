@@ -34,7 +34,7 @@ export function DashboardHeader({
       {/* 1. Logo Section (New) */}
       <div className="flex items-center shrink-0 mr-4 md:mr-8">
         <span className="text-black font-extrabold text-xl tracking-tight">
-          book and lab
+          BookandLab
         </span>
       </div>
 
