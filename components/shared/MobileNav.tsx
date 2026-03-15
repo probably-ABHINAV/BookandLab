@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; 
 import { 
   Menu, X, LayoutDashboard, BookOpen, Star, 
   Bell, Settings, Trophy, LogOut 
@@ -21,7 +20,6 @@ export function MobileNav({
   gamification?: any 
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
 
   // Map icons to names to match layout
   const ICON_MAP: Record<string, any> = {
@@ -37,26 +35,6 @@ export function MobileNav({
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
-
-  // WORKING LOGOUT FUNCTION
-  const handleLogout = async () => {
-    setIsOpen(false); // Menu close karein
-    
-    try {
-      // 1. Clear local storage/session (Agar aap JWT ya custom auth use kar rahe hain)
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      
-      // 2. Redirect to Home Page (/) to prevent the 404 error from /login
-      router.push('/');
-      
-      // Optional: Agar router.push se cache clear nahi ho raha, toh yeh use karein:
-      // window.location.href = '/';
-      
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
 
   return (
     <div className="lg:hidden">
@@ -171,15 +149,15 @@ export function MobileNav({
                 )}
               </div>
 
-              {/* Logout Footer - Working Button */}
+              {/* Logout Footer - Working with Stack Auth */}
               <div className="p-4 border-t border-slate-800/80 shrink-0">
-                <button 
-                  onClick={handleLogout}
+                <a 
+                  href="/handler/sign-out"
                   className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-bold hover:bg-rose-500/20 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500/40 cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign Out
-                </button>
+                </a>
               </div>
 
             </motion.aside>
