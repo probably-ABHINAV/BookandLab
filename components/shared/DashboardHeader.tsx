@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, ChevronDown, User, BookOpen } from "lucide-react"; // Note: Added BookOpen optionally!
+import { Search, ChevronDown, User, BookOpen } from "lucide-react"; 
 import { NotificationClient } from "@/components/shared/NotificationClient";
 
 export function DashboardHeader({ 
@@ -33,8 +33,8 @@ export function DashboardHeader({
       
       {/* 1. Logo Section (New) */}
       <div className="flex items-center shrink-0 mr-4 md:mr-8">
-        <span className="text-black font-extrabold text-xl tracking-tight">
-          BookandLab
+        <span className="text-black font-extrabold text-xl tracking-tight whitespace-nowrap">
+          book and lab
         </span>
       </div>
 
