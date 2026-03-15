@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, ChevronDown, User } from "lucide-react";
+import { Search, ChevronDown, User, BookOpen } from "lucide-react"; // Note: Added BookOpen optionally!
 import { NotificationClient } from "@/components/shared/NotificationClient";
 
 export function DashboardHeader({ 
@@ -31,7 +31,14 @@ export function DashboardHeader({
   return (
     <header className="h-[88px] bg-[#fafafa] px-4 md:px-8 flex items-center justify-between sticky top-0 z-30">
       
-      {/* 1. Left: Search Bar */}
+      {/* 1. Logo Section (New) */}
+      <div className="flex items-center shrink-0 mr-4 md:mr-8">
+        <span className="text-black font-extrabold text-xl tracking-tight">
+          book and lab
+        </span>
+      </div>
+
+      {/* 2. Left/Middle: Search Bar */}
       <div className="flex-1 max-w-md hidden md:block">
         <div className="flex items-center bg-white border border-slate-200 rounded-full px-4 py-2.5 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all">
           <Search className="w-4 h-4 text-slate-400 mr-2.5 shrink-0" />
@@ -43,7 +50,7 @@ export function DashboardHeader({
         </div>
       </div>
 
-      {/* 2. Middle: Time Filter Toggle (Matching Screenshot) */}
+      {/* 3. Middle: Time Filter Toggle */}
       <div className="hidden lg:flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-sm text-sm font-semibold mx-4">
         <button className="px-4 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition-colors">Day</button>
         <button className="px-4 py-1.5 rounded-lg bg-slate-50 text-slate-900 border border-slate-200 shadow-sm">Week</button>
@@ -51,10 +58,10 @@ export function DashboardHeader({
         <button className="px-4 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 transition-colors">Year</button>
       </div>
 
-      {/* 3. Right: Notifications & Profile */}
+      {/* 4. Right: Notifications & Profile */}
       <div className="flex items-center gap-3 ml-auto">
         
-        {/* Constrained Notification Wrapper to prevent giant icons */}
+        {/* Constrained Notification Wrapper */}
         <div className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm shrink-0 [&>button]:w-full [&>button]:h-full [&_svg]:w-5 [&_svg]:h-5">
           <NotificationClient 
             userId={user?.id} 
