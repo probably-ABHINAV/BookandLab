@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation"; // Added for working logout redirect
 import { 
   Menu, X, LayoutDashboard, BookOpen, Star, 
   Bell, Settings, Trophy, LogOut 
@@ -20,6 +21,7 @@ export function MobileNav({
   gamification?: any 
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   // Map icons to names to match layout
   const ICON_MAP: Record<string, any> = {
@@ -35,6 +37,22 @@ export function MobileNav({
     }
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
+
+  // Handle the logout action safely
+  const handleLogout = async () => {
+    setIsOpen(false); // Close the mobile menu first
+    
+    try {
+      // 🚨 ADD YOUR AUTHENTICATION LOGIC HERE 🚨
+      // Example for NextAuth: await signOut({ redirect: false });
+      // Example for Supabase: await supabase.auth.signOut();
+      
+      // Fallback redirect to login page
+      router.push('/login');
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <div className="lg:hidden">
@@ -73,8 +91,9 @@ export function MobileNav({
               {/* Header / Logo Area */}
               <div className="p-6 border-b border-slate-800/80 flex items-center justify-between shrink-0">
                 <div className="flex flex-col">
+                  {/* Fixed standard typography to match desktop */}
                   <span className="text-white font-extrabold text-xl tracking-tight">
-                    BookandLab
+                    book and lab
                   </span>
                   <span className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-1">
                     Student
@@ -148,16 +167,15 @@ export function MobileNav({
                 )}
               </div>
 
-              {/* Logout Footer */}
+              {/* Logout Footer - Converted to an active Button */}
               <div className="p-4 border-t border-slate-800/80 shrink-0">
-                <Link 
-                  href="/logout" 
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-bold hover:bg-rose-500/20 transition-colors"
+                <button 
+                  onClick={handleLogout}
+                  className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-bold hover:bg-rose-500/20 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500/40"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign Out
-                </Link>
+                </button>
               </div>
 
             </motion.aside>
