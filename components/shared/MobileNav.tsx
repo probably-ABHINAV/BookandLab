@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Added for working logout redirect
+import { useRouter } from "next/navigation"; 
 import { 
   Menu, X, LayoutDashboard, BookOpen, Star, 
   Bell, Settings, Trophy, LogOut 
@@ -38,17 +38,21 @@ export function MobileNav({
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
-  // Handle the logout action safely
+  // WORKING LOGOUT FUNCTION
   const handleLogout = async () => {
-    setIsOpen(false); // Close the mobile menu first
+    setIsOpen(false); // Menu close karein
     
     try {
-      // 🚨 ADD YOUR AUTHENTICATION LOGIC HERE 🚨
-      // Example for NextAuth: await signOut({ redirect: false });
-      // Example for Supabase: await supabase.auth.signOut();
+      // 1. Clear local storage/session (Agar aap JWT ya custom auth use kar rahe hain)
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       
-      // Fallback redirect to login page
-      router.push('/login');
+      // 2. Redirect to Home Page (/) to prevent the 404 error from /login
+      router.push('/');
+      
+      // Optional: Agar router.push se cache clear nahi ho raha, toh yeh use karein:
+      // window.location.href = '/';
+      
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -91,8 +95,8 @@ export function MobileNav({
               {/* Header / Logo Area */}
               <div className="p-6 border-b border-slate-800/80 flex items-center justify-between shrink-0">
                 <div className="flex flex-col">
-                  {/* Fixed standard typography to match desktop */}
-                  <span className="text-white font-extrabold text-xl tracking-tight">
+                  {/* Perfectly formatted 'book and lab' */}
+                  <span className="text-white font-extrabold text-xl tracking-tight whitespace-nowrap">
                     book and lab
                   </span>
                   <span className="text-[9px] text-slate-500 font-bold uppercase tracking-[0.2em] mt-1">
@@ -101,7 +105,7 @@ export function MobileNav({
                 </div>
                 <button 
                   onClick={() => setIsOpen(false)} 
-                  className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+                  className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-colors outline-none"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -167,11 +171,11 @@ export function MobileNav({
                 )}
               </div>
 
-              {/* Logout Footer - Converted to an active Button */}
+              {/* Logout Footer - Working Button */}
               <div className="p-4 border-t border-slate-800/80 shrink-0">
                 <button 
                   onClick={handleLogout}
-                  className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-bold hover:bg-rose-500/20 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500/40"
+                  className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-rose-500/10 text-rose-400 text-sm font-bold hover:bg-rose-500/20 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500/40 cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign Out
