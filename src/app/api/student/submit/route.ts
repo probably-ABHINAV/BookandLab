@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
   const { error: subErr } = await subscriptionRule(userId);
   if (subErr) return subErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   try {
     // 1. Insert structured submission
     const { data: submission, error: subError } = await supabase

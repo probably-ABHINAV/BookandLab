@@ -14,16 +14,16 @@ const updateChapterSchema = z.object({
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { error: authErr, user } = await requireRole(request, "admin");
   if (authErr) return authErr;
-  const chapterId = params.id;
+  const { id: chapterId } = await params;
 
   const { data, error: valErr } = await validateBody(request, updateChapterSchema);
   if (valErr) return valErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   try {
     // Audit before update
     const { data: oldData } = await supabase.from("chapters").select("*").eq("id", chapterId).single();

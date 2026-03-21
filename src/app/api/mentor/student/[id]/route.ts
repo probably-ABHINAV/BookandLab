@@ -4,14 +4,14 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { error: authErr, user } = await requireRole(request, "mentor");
   if (authErr) return authErr;
   const mentorId = user!.id;
-  const studentId = params.id;
+  const { id: studentId } = await params;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   try {
     // 1. BOLA Guard

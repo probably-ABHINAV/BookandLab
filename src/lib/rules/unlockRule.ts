@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export async function canAccessChapter(userId: string, chapterId: string) {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   const { data: ch } = await supabase
     .from("chapters")
     .select("is_published, prerequisite_chapter_id")

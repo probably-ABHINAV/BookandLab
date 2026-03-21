@@ -1,7 +1,8 @@
+import { NextRequest } from "next/server";
 import { requireRole } from "@/lib/rules/authRule";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   // Use createServerSupabaseClient because we need row-level info or admin client?
   // Actually, instructions state "Admin API routes use SUPABASE_SERVICE_ROLE_KEY"
   // so we'll just use the regular mapped one, but our custom `requireRole` checks the role.

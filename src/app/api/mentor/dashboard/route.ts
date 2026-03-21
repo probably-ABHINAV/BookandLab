@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   if (authErr) return authErr;
   const mentorId = user!.id;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   try {
     // 1. Get assigned students
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     const studentIds = assignments?.map((a) => a.student_id) || [];
 
     // 2. Pending Reviews
-    let pendingReviews = [];
+    let pendingReviews: any[] = [];
     if (studentIds.length > 0) {
       const { data } = await supabase
         .from("project_submissions")
@@ -45,16 +45,19 @@ export async function GET(request: NextRequest) {
     };
 
     // 4. Student Skill Table (simplistic mock-up of average calculation for dashboard)
-    const studentSkillTable = assignments?.map((a) => ({
-      student_id: a.student_id,
-      name: a.users?.name,
-      avatar: a.users?.avatar_url,
-      // Ideally, a cron/trigger would compute these and store in `skill_growth_summary` table per Part 4 - 7.3
-      avg_concept: 0,
-      avg_thinking: 0,
-      avg_application: 0,
-      avg_communication: 0
-    })) || [];
+    const studentSkillTable = assignments?.map((a) => {
+      const u = a.users as any;
+      return {
+        student_id: a.student_id,
+        name: Array.isArray(u) ? u[0]?.name : u?.name,
+        avatar: Array.isArray(u) ? u[0]?.avatar_url : u?.avatar_url,
+        // Ideally, a cron/trigger would compute these and store in `skill_growth_summary` table per Part 4 - 7.3
+        avg_concept: 0,
+        avg_thinking: 0,
+        avg_application: 0,
+        avg_communication: 0
+      };
+    }) || [];
 
     return NextResponse.json({
       success: true,

@@ -57,16 +57,18 @@ export const extendSubscriptionSchema = z.object({
   end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD"),
 });
 
+import { NextResponse } from "next/server";
+
 // ── GENERIC HELPER ────────────────────────
-export async function validateBody(req: Request, schema: z.ZodSchema) {
+export async function validateBody<T>(req: Request, schema: z.ZodSchema<T>) {
   try {
-    const body = await req.json();
+    const body = await req.json().catch(() => ({}));
     const data = schema.parse(body);
-    return { data, error: null };
+    return { data: data as T, error: null };
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return { data: null, error: Response.json({ error: "Validation failed", details: err.errors }, { status: 422 }) };
+      return { data: null, error: NextResponse.json({ error: "Validation failed", details: err.issues }, { status: 422 }) };
     }
-    return { data: null, error: Response.json({ error: "Invalid JSON" }, { status: 400 }) };
+    return { data: null, error: NextResponse.json({ error: "Invalid JSON or missing fields" }, { status: 400 }) };
   }
 }

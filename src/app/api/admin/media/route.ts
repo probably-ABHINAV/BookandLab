@@ -1,7 +1,8 @@
+import { NextRequest } from "next/server";
 import { requireRole } from "@/lib/rules/authRule";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { error: authErr } = await requireRole(request, "admin");
   if (authErr) return authErr;
 

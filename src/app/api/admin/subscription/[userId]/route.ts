@@ -2,19 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireRole } from "@/lib/rules/authRule";
 import { validateBody, extendSubscriptionSchema } from "@/lib/validations/schemas";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { z } from "zod";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   const { error: authErr, user } = await requireRole(request, "admin");
   if (authErr) return authErr;
-  const targetUserId = params.userId;
+  const { userId: targetUserId } = await params;
 
-  const { data, error: valErr } = await validateBody(request, extendSubscriptionSchema);
+  const { data, error: valErr } = await validateBody<z.infer<typeof extendSubscriptionSchema>>(request, extendSubscriptionSchema);
   if (valErr) return valErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   try {
     // Find latest sub
     const { data: sub } = await supabase

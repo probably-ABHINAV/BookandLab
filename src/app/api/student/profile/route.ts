@@ -1,3 +1,4 @@
+import { NextRequest } from "next/server";
 import { requireRole } from "@/lib/rules/authRule";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { z } from "zod";
@@ -7,14 +8,14 @@ const profileSchema = z.object({
   avatar_url: z.string().url().nullable().optional(),
 });
 
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
   const { error, user } = await requireRole(request, "student");
   if (error) return error;
 
   const body = await request.json().catch(() => ({}));
   const parsed = profileSchema.safeParse(body);
   if (!parsed.success)
-    return Response.json({ error: "Validation failed", details: parsed.error.errors }, { status: 422 });
+    return Response.json({ error: "Validation failed", details: parsed.error.issues }, { status: 422 });
 
   const supabase = await createServerSupabaseClient();
   

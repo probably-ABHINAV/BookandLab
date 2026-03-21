@@ -2,6 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import Link from "next/link";
 import { Plus, Pencil, Trash2, Eye, EyeOff, BookOpen, Clock } from "lucide-react";
 
 export default function AdminChaptersPage() {

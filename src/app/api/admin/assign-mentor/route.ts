@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   const { data, error: valErr } = await validateBody(request, assignMentorSchema);
   if (valErr) return valErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   try {
     // 1. Inactivate existing true
     await supabase.from("mentor_assignments")

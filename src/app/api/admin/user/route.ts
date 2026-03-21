@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   const { data, error: valErr } = await validateBody(request, createUserSchema);
   if (valErr) return valErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   try {
     // 1. Insert User (Assume stack auth user creation handled separately or via triggers/admin api)
     const { data: newUser, error } = await supabase

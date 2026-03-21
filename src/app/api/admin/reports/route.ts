@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const { error: authErr } = await requireRole(request, "admin");
   if (authErr) return authErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   try {
     const { count: userCount } = await supabase.from("users").select("id", { count: "exact" }).is("deleted_at", null);
     const { count: studentCount } = await supabase.from("users").select("id", { count: "exact" }).eq("role", "student").is("deleted_at", null);

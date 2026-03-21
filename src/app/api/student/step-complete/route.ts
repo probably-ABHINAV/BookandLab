@@ -15,7 +15,7 @@ export async function POST(req: Request) {
   const { error: subErr } = await subscriptionRule(userId);
   if (subErr) return subErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   const { data: existing } = await supabase
     .from("chapter_progress").select("*")
     .eq("user_id", userId).eq("chapter_id", data.chapter_id).single();

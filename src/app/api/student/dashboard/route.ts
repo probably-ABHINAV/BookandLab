@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   const { error: subErr } = await subscriptionRule(userId);
   if (subErr) return subErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   try {
     // 1. User stats (streak, weekly goal)

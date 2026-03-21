@@ -6,13 +6,13 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { error: authErr, user } = await requireRole(request, "student");
   if (authErr) return authErr;
   const userId = user!.id;
   
-  const { id: chapterId } = params;
+  const { id: chapterId } = await params;
 
   const { error: subErr } = await subscriptionRule(userId);
   if (subErr) return subErr;
@@ -23,7 +23,7 @@ export async function GET(
     return NextResponse.json({ error: "Chapter locked or missing prerequisite" }, { status: 403 });
   }
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   try {
     // 1. Read Chapter details

@@ -1,4 +1,3 @@
-```typescript
 import { NextRequest, NextResponse } from "next/server";
 import { requireRole } from "@/lib/rules/authRule";
 import { createServerSupabaseAdmin } from "@/lib/supabase/server";
@@ -36,7 +35,7 @@ const contentSchema = z.object({
                          })).max(5).optional(),
 });
 
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { error: authErr } = await requireRole(request, "admin");
   if (authErr) return authErr;
 
@@ -51,7 +50,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   return Response.json({ content: data || null });
 }
 
-export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { error: authErr } = await requireRole(request, "admin");
   if (authErr) return authErr;
 
@@ -59,7 +58,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const body = await request.json().catch(() => ({}));
   const parsed = contentSchema.safeParse(body);
   if (!parsed.success)
-    return Response.json({ error: "Validation failed", details: parsed.error.errors }, { status: 422 });
+    return Response.json({ error: "Validation failed", details: parsed.error.issues }, { status: 422 });
 
   const supabase = await createServerSupabaseAdmin();
   const { data, error } = await supabase
@@ -75,4 +74,3 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   if (error) return Response.json({ error: "Save failed", details: error }, { status: 500 });
   return Response.json({ success: true, content: data, saved_at: new Date().toISOString() });
 }
-```

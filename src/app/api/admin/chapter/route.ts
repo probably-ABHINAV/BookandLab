@@ -2,21 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireRole } from "@/lib/rules/authRule";
 import { validateBody, createChapterSchema } from "@/lib/validations/schemas";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { z } from "zod";
 
 export async function POST(request: NextRequest) {
   const { error: authErr, user } = await requireRole(request, "admin");
   if (authErr) return authErr;
 
-  const { data, error: valErr } = await validateBody(request, createChapterSchema);
+  const { data, error: valErr } = await validateBody<z.infer<typeof createChapterSchema>>(request, createChapterSchema);
   if (valErr) return valErr;
 
-  const supabase = createServerSupabaseClient(); // Assuming configured with service_role if needed, or RLS allows given user role 'admin'
+  const supabase = await createServerSupabaseClient(); // Assuming configured with service_role if needed, or RLS allows given user role 'admin'
   try {
     // Insert chapter
     const { data: chapter, error } = await supabase
       .from("chapters")
       .insert({
-        ...data,
+        ...(data as any),
         is_published: false
       })
       .select()

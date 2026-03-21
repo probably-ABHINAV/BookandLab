@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const { data, error: valErr } = await validateBody(req, mentorReviewSchema);
   if (valErr) return valErr;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   // BOLA CHECK — verify mentor is assigned to this student
   const { data: sub } = await supabase

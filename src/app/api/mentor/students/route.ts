@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   if (authErr) return authErr;
   const mentorId = user!.id;
 
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
 
   try {
     // 1. Get assigned students list
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     
     // 2. We'd enrich this with chapter progress and overall mentor score stats. 
     // This replicates the BOLA logic because `studentIds` limits exactly who we query.
-    let studentDetails = [];
+    let studentDetails: any[] = [];
 
     if (studentIds.length > 0) {
       const { data: stats } = await supabase
@@ -31,9 +31,12 @@ export async function GET(request: NextRequest) {
         
       studentDetails = assignments!.map(a => {
         const matchingStats = stats?.find(s => s.user_id === a.student_id);
+        const u = (a.users as any);
         return {
           id: a.student_id,
-          ...a.users,
+          name: Array.isArray(u) ? u[0]?.name : u?.name,
+          email: Array.isArray(u) ? u[0]?.email : u?.email,
+          avatar_url: Array.isArray(u) ? u[0]?.avatar_url : u?.avatar_url,
           streak: matchingStats?.current_streak || 0,
           completed: matchingStats?.total_chapters_completed || 0
         };

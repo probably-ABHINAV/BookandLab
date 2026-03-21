@@ -1,7 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export async function subscriptionRule(userId: string) {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createServerSupabaseClient();
   const today = new Date().toISOString().split("T")[0];
   const { data } = await supabase
     .from("subscriptions")
