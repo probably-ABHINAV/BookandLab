@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@1,500;1,600&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-y: #F5A623;
+  --color-yd: #B8780A;
+  --color-dark: #17140D;
+  --color-d2: #2A261A;
+  --color-bg: #EEE8DA;
+  --color-bg2: #F5F0E8;
+  --color-wh: #FFFFFF;
+  --color-cream: #FAF4E8;
+  --color-mu: #7A7060;
+  --color-mu2: #B0A898;
+  --color-br: #E0D8C8;
+  
+  --font-sora: 'Sora', sans-serif;
+}
+
+:root {
+  --y: #F5A623;
+  --yd: #B8780A;
+  --dark: #17140D;
+  --d2: #2A261A;
+  --bg: #EEE8DA;
+  --bg2: #F5F0E8;
+  --wh: #FFFFFF;
+  --cream: #FAF4E8;
+  --mu: #7A7060;
+  --mu2: #B0A898;
+  --br: #E0D8C8;
+  
+  --green: #16A34A;
+  --green-bg: #DCFCE7;
+  --red: #DC2626;
+  --red-bg: #FEE2E2;
+  --blue: #1D6FB5;
+  --blue-bg: #DBEAFE;
+  --purple: #6D28D9;
+  --purple-bg: #EDE9FE;
+  --amber: #B45309;
+  --amber-bg: #FEF3C7;
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  background-color: #F0EBE0;
+  color: var(--dark);
+}
+
+@layer components {
+  /* Step 1: Every card */
+  .card {
+    @apply bg-white rounded-[16px] border border-[var(--br)] p-[20px] shadow-sm;
+  }
+
+  /* Step 1: Every primary button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-[var(--dark)] text-white font-semibold rounded-full px-6 py-2.5 transition-opacity hover:opacity-90;
+  }
+
+  /* Step 1: Every accent button */
+  .btn-accent {
+    @apply inline-flex items-center justify-center bg-[var(--y)] text-[var(--dark)] font-bold rounded-full px-6 py-2.5 transition-transform hover:scale-105;
+  }
+
+  /* Accent font for pills */
+  .pill-highlight {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  /* Shared badges */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide;
+  }
+}
+
+/* Base animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* ── BookandLab Landing Page Additions ── */
+
+.hero-section  { background: #F5A623; }
+.cream-section { background: #FDF8EF; }
+.dark-section  { background: #17140D; }
+.cream2-section{ background: #FAF4E8; }
+
+.oval-dark {
+  display: inline-block;
+  background: #17140D;
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 2px 24px 6px;
+  font-style: italic;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+}
+.oval-outline {
+  display: inline-block;
+  border: 2.5px solid #F5A623;
+  border-radius: 9999px;
+  padding: 1px 20px 4px;
+  font-style: italic;
+  font-family: 'Lora', serif;
+  font-weight: 600;
+}
+.doodle {
+  position: absolute;
+  pointer-events: none;
+  color: #17140D;
+  font-weight: 700;
+  opacity: 0.32;
+}
+.feat-card:hover { transform: translateY(-3px); transition: all 0.2s; }
+.plan-card:hover { transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0,0,0,.15); }
+.step-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,.08); }
